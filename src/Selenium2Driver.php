@@ -1023,6 +1023,7 @@ JS;
         $destination = $this->findElement($destinationXpath);
 
         if ($this->isW3C()) {
+            $this->scrollElementIntoView($source);
             $actions = array(
                 'actions' => [
                     [
@@ -1030,9 +1031,9 @@ JS;
                         'id' => 'mouse1',
                         'parameters' => ['pointerType' => 'mouse'],
                         'actions' => [
-                            ['type' => 'pointerMove', 'duration' => 0, 'origin' => [Element::WEB_ELEMENT_ID => $this->findElement($sourceXpath)->getID()], 'x' => 0, 'y' => 0],
+                            ['type' => 'pointerMove', 'duration' => 0, 'origin' => [Element::WEB_ELEMENT_ID => $source->getID()], 'x' => 0, 'y' => 0],
                             ['type' => 'pointerDown', "button" => 0],
-                            ['type' => 'pointerMove', 'duration' => 0, 'origin' => [Element::WEB_ELEMENT_ID => $this->findElement($destinationXpath)->getID()], 'x' => 0, 'y' => 0],
+                            ['type' => 'pointerMove', 'duration' => 0, 'origin' => [Element::WEB_ELEMENT_ID => $destination->getID()], 'x' => 0, 'y' => 0],
                             ['type' => 'pointerUp', "button" => 0],
                         ],
                     ],
