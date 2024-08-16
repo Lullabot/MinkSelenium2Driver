@@ -953,8 +953,19 @@ JS;
     private function scrollElementIntoView(Element $element): void {
         $script = <<<JS
             var e = arguments[0];
-            e.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'nearest' });
             var rect = e.getBoundingClientRect();
+            var inView = (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+
+            if (!inView) {
+                e.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'nearest' });
+                rect = e.getBoundingClientRect();
+            }
+
             return {'x': rect.left, 'y': rect.top};
         JS;
 
