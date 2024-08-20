@@ -8,14 +8,48 @@ class LargePageClickTest extends TestCase
 {
     public function testLargePageClick(): void
     {
-        $this->getSession()->visit($this->pathTo('/multi_input_form.html'));
+        $this->getSession()->visit($this->pathTo('/advanced_form.html'));
+        // @todo Why is size attribute causing ElementClickIntercepted errors?
+        $this->getSession()->executeScript('document.querySelector("input[name=\'first_name\']").setAttribute("size", 200);');
 
-        // Add a large amount of br tags so that the button is not in view.
+        // Add a large amount of br tags so that form elements are not in view.
         $this->makePageLong();
 
         $page = $this->getSession()->getPage();
+
+        // Test select focus.
+        $this->scrollToTop();
+        $page->selectFieldOption('select_number', 'thirty');
+
+        // Test radio button focus.
+        $this->scrollToTop();
+        $page->selectFieldOption('sex', 'm');
+
+        // Test checkboxes focus.
+        $this->scrollToTop();
+        $page->uncheckField('mail_list');
+        $this->scrollToTop();
+        $page->checkField('agreement');
+
+        // Test button focus and submit.
+        $this->scrollToTop();
         $page->pressButton('Register');
-        $this->assertStringContainsString('no file', $page->getContent());
+
+        $expected = <<<EOF
+array(
+  agreement = `on`,
+  email = `your@email.com`,
+  first_name = `Firstname`,
+  last_name = `Lastname`,
+  notes = `original notes`,
+  select_number = `30`,
+  sex = `m`,
+  submit = `Register`,
+)
+no file
+EOF;
+
+        $this->assertStringContainsString($expected, $page->getContent());
     }
 
     public function testDragDrop(): void
@@ -45,6 +79,13 @@ class LargePageClickTest extends TestCase
             document.body.insertBefore(p, document.body.firstChild);
         JS;
         $this->getSession()->executeScript($script);
+    }
+
+    /**
+     * Scrolls to the top of the page.
+     */
+    private function scrollToTop(): void {
+        $this->getSession()->executeScript('window.scrollTo(0, 0);');
     }
 
 }
