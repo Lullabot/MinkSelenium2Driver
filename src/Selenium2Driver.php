@@ -953,7 +953,7 @@ JS;
     private function scrollElementIntoView(Element $element): void {
         $script = <<<JS
             var e = arguments[0];
-            e.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'nearest' });
+            e.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'nearest' });
             var rect = e.getBoundingClientRect();
             return {'x': rect.left, 'y': rect.top};
         JS;
