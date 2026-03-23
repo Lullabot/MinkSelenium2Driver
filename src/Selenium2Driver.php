@@ -1188,7 +1188,7 @@ JS;
     {
         // short-circuit when we already have the right button of the group to avoid XPath queries
         if ($element->attribute('value') === $value) {
-            $this->clickOnElement($element);
+            $element->click();
 
             return;
         }
@@ -1230,7 +1230,7 @@ XPATH;
             throw new DriverException($message, 0, $e);
         }
 
-        $this->clickOnElement($input);
+        $input->click();
     }
 
     /**
@@ -1242,7 +1242,6 @@ XPATH;
         // The value of an option is the normalized version of its text when it has no value attribute
         $optionQuery = sprintf('.//option[@value = %s or (not(@value) and normalize-space(.) = %s)]', $escapedValue, $escapedValue);
         $option = $element->element('xpath', $optionQuery);
-        $this->doMouseOver($element);
 
         if ($multiple || !$element->attribute('multiple')) {
             if (!$option->selected()) {
