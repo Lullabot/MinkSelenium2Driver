@@ -39,9 +39,8 @@ class Selenium2Driver extends CoreDriver
 
     /**
      * The WebDriver instance
-     * @var WebDriver
      */
-    private $webDriver;
+    private WebDriver $webDriver;
 
     /**
      * @var string
@@ -55,9 +54,8 @@ class Selenium2Driver extends CoreDriver
 
     /**
      * The WebDriverSession instance
-     * @var Session|null
      */
-    private $wdSession;
+    private ?Session $wdSession = null;
 
     /**
      * The timeout configuration
@@ -66,9 +64,9 @@ class Selenium2Driver extends CoreDriver
     private $timeouts = array();
 
     /**
-     * @var Escaper
+     * The Escaper instance
      */
-    private $xpathEscaper;
+    private Escaper $xpathEscaper;
 
     /**
      * Instantiates the driver.
